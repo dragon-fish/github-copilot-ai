@@ -1,4 +1,4 @@
-import { copilot } from '..'
+import { copilot } from './client.js'
 
 export async function chat(...args: string[]) {
   const content = args.join(' ')
@@ -7,7 +7,7 @@ export async function chat(...args: string[]) {
     process.exit(1)
   }
 
-  const res = await copilot.client.chat.completions.create({
+  const res = await copilot.chat.completions.create({
     model: 'claude-sonnet-4',
     temperature: 1.3,
     messages: [

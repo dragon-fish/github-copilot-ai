@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "target": "ESNext",
+    "module": "ESNext",
+    "strict": true,
+    "importHelpers": true,
+    "moduleResolution": "Bundler",
+    "experimentalDecorators": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "sourceMap": true,
+    "resolveJsonModule": true,
+    "lib": ["ESNext"],
+    "declaration": true,
+    "outDir": "dist",
+    "paths": {}
+  },
+  "include": ["src", "demo"],
+  "exclude": ["lib", "dist", "dev", "scripts"]
+}
