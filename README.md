@@ -2,6 +2,8 @@
 
 Using GitHub Copilot API like OpenAI API.
 
+**For learning and research purposes only. There is no guarantee of availability. Don't file issues.**
+
 ## Installation
 
 ```bash
@@ -31,3 +33,9 @@ const response = await client.chat.completions.create({
   ],
 })
 ```
+
+---
+
+> MIT License
+>
+> Copyright © 2025 @dragon-fish
