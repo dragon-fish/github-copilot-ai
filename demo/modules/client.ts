@@ -49,12 +49,14 @@ export async function getClient() {
     if (localAuth) {
       _client.setCopilotInternalAuth(localAuth)
     }
-    const user = await _client.getCopilotInternalUser().catch(() => {
+    const user = await _client.getCopilotInternalUser().catch((e) => {
       console.warn('Failed to fetch copilot internal user')
+      console.warn(e)
       return null
     })
-    const auth = await _client.getCopilotInternalAuth().catch(() => {
+    const auth = await _client.getCopilotInternalAuth().catch((e) => {
       console.warn('Failed to fetch copilot internal auth')
+      console.warn(e)
       return null
     })
     await writeLocalStore(

@@ -65,7 +65,7 @@ export class GithubCopilotAI extends OpenAI {
       return null
     }
     if (!user.assigned_date) {
-      throw new Error('Invalid payload')
+      throw new Error('Invalid payload', { cause: user })
     }
     this.#copilotInternalUser = user
     this.baseURL = GithubCopilotAI.getBaseURLByPlan(
@@ -99,7 +99,7 @@ export class GithubCopilotAI extends OpenAI {
       return null
     }
     if (!auth.token || !auth.expires_at) {
-      throw new Error('Invalid payload')
+      throw new Error('Invalid payload', { cause: auth })
     }
     if (!auth.token || Date.now() / 1000 > auth.expires_at) {
       this.#copilotInternalAuth = null
