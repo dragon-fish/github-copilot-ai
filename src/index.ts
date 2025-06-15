@@ -1,5 +1,12 @@
 import { ClientOptions, OpenAI } from 'openai'
 
+/**
+ * GitHub Copilot AI client
+ *
+ * @author dragon-fish <dragon-fish@qq.com>
+ * @license MIT
+ * @see https://github.com/dragon-fish/github-copilot-ai
+ */
 export class GithubCopilotAI extends OpenAI {
   #copilotInternalUser: CopilotInternalUser | null = null
   #copilotInternalAuth: CopilotInternalAuth | null = null
