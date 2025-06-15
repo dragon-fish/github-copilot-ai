@@ -46,6 +46,12 @@ Follow the instructions in the script to get your GitHub Auth Token.
 
 Refer to [the source code](./demo/modules/oauth.ts) for more details, if you want to implement it elsewhere or in another language.
 
+## Python version?
+
+https://gist.github.com/dragon-fish/86432fc4baa69875ce1013e0c8dd472c
+
+I'm not good at Python. This entire script is converted from the TypeScript version by copilot itself. ~~WOW, NTR~~
+
 ---
 
 > MIT License
