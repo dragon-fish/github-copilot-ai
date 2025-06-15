@@ -2,10 +2,12 @@ import 'dotenv/config'
 import { CommandsController } from './CommandsController'
 import { chat } from './modules/chat'
 import { models } from './modules/models'
+import { getAuthToken } from './modules/getAuthToken'
 
 const cmd = new CommandsController()
 cmd.register('chat', chat)
 cmd.register('models', models)
+cmd.register('token', getAuthToken)
 
 const cliCommand = process.argv[2]
 const cliArgs = process.argv.slice(3)

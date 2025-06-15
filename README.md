@@ -34,6 +34,16 @@ const response = await client.chat.completions.create({
 })
 ```
 
+## How to get GitHub Auth Token
+
+We create a simple script to get GitHub Auth Token.
+
+```sh
+pnpm run token
+```
+
+Follow the instructions in the script to get your GitHub Auth Token.
+
 ---
 
 > MIT License

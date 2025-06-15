@@ -7,6 +7,6 @@ export async function models() {
   }).format
   const res = await copilot.models.list()
   res.data.forEach((model, index) => {
-    console.log(`${index + 1}. ${model.id} (${formatDate(model.created)})`)
+    console.log(`${index + 1}. ${model.id}`)
   })
 }

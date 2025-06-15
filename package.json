@@ -8,7 +8,8 @@
   "scripts": {
     "build": "pkgroll",
     "chat": "tsx demo/index.ts chat",
-    "models": "tsx demo/index.ts models"
+    "models": "tsx demo/index.ts models",
+    "token": "tsx demo/index.ts token"
   },
   "exports": {
     ".": {
@@ -34,6 +35,8 @@
   "packageManager": "pnpm@10.8.1",
   "devDependencies": {
     "@types/node": "^24.0.1",
+    "clipboardy": "^4.0.0",
+    "consola": "^3.4.2",
     "dotenv": "^16.5.0",
     "pkgroll": "^2.12.2",
     "tsx": "^4.20.3",
