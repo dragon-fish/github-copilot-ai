@@ -1,12 +1,13 @@
 {
   "name": "github-copilot-ai",
-  "version": "0.2.0",
+  "version": "1.0.0",
   "description": "Using GitHub Copilot AI just like OpenAI package.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "type": "module",
   "scripts": {
     "build": "pkgroll",
+    "prepublish": "pnpm run build",
     "chat": "tsx demo/index.ts chat",
     "models": "tsx demo/index.ts models",
     "oauth": "tsx demo/index.ts oauth"
