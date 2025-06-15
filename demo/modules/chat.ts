@@ -1,4 +1,4 @@
-import { copilot } from './client.js'
+import { getClient } from './client.js'
 
 export async function chat(...args: string[]) {
   const content = args.join(' ')
@@ -6,6 +6,11 @@ export async function chat(...args: string[]) {
     console.error('Please provide a prompt as an argument.')
     process.exit(1)
   }
+
+  const copilot = await getClient()
+  try {
+    await copilot.getCopilotInternalUser()
+  } catch {}
 
   const res = await copilot.chat.completions.create({
     model: 'claude-sonnet-4',

@@ -1,20 +1,27 @@
 import { ClientOptions, OpenAI } from 'openai'
 
 export class GithubCopilotAI extends OpenAI {
+  #copilotInternalUser: CopilotInternalUser | null = null
   #copilotInternalAuth: CopilotInternalAuth | null = null
   static defaultHeaders: Record<string, string> = {
     'copilot-integration-id': 'vscode-chat',
-    'editor-plugin-version': 'copilot-chat/0.25.2025021001',
-    'openai-intent': 'conversation-panel',
-    'user-agent':
-      'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko)',
+    'editor-plugin-version': 'copilot-chat/0.28.0',
     'editor-version': 'vscode/1.100.0-insider',
+    'openai-intent': 'conversation-panel',
+    'user-agent': 'GitHubCopilotChat/0.28.0',
   }
 
-  constructor(options: ClientOptions = {}) {
+  constructor(
+    options: ClientOptions & {
+      copilotPlan?: 'default' | 'individual' | 'enterprise'
+    } = {}
+  ) {
+    let baseURL = GithubCopilotAI.getBaseURLByPlan(
+      options.copilotPlan || 'default'
+    )
     super({
       ...options,
-      baseURL: 'https://api.githubcopilot.com/',
+      baseURL,
       defaultHeaders: GithubCopilotAI.defaultHeaders,
       fetch: async (url, options) => {
         const auth = await this.getCopilotInternalAuth()
@@ -23,6 +30,48 @@ export class GithubCopilotAI extends OpenAI {
         return fetch(request)
       },
     })
+  }
+
+  static getBaseURLByPlan(
+    copilotPlan: 'individual' | 'enterprise' | string = 'default'
+  ): string {
+    if (copilotPlan === 'enterprise') {
+      return 'https://api.enterprise.githubcopilot.com/'
+    } else if (copilotPlan === 'individual') {
+      return 'https://api.individual.githubcopilot.com/'
+    } else {
+      return 'https://api.githubcopilot.com/'
+    }
+  }
+
+  async getCopilotInternalUser() {
+    if (this.#copilotInternalUser && this.#copilotInternalUser.assigned_date) {
+      return this.#copilotInternalUser
+    }
+    const res = await fetch('https://api.github.com/copilot_internal/user', {
+      headers: {
+        Authorization: `Bearer ${this.apiKey}`,
+      },
+    }).then((res) => res.json() as Promise<CopilotInternalUser>)
+    return this.setCopilotInternalUser(res)!
+  }
+  setCopilotInternalUser(user: null): null
+  setCopilotInternalUser(user: CopilotInternalUser): CopilotInternalUser | null
+  setCopilotInternalUser(
+    user: CopilotInternalUser | null
+  ): CopilotInternalUser | null {
+    if (!user) {
+      this.#copilotInternalUser = null
+      return null
+    }
+    if (!user.assigned_date) {
+      throw new Error('Invalid payload')
+    }
+    this.#copilotInternalUser = user
+    this.baseURL = GithubCopilotAI.getBaseURLByPlan(
+      user.copilot_plan || 'default'
+    )
+    return this.#copilotInternalUser
   }
 
   async getCopilotInternalAuth() {
@@ -39,20 +88,37 @@ export class GithubCopilotAI extends OpenAI {
           Authorization: `Bearer ${this.apiKey}`,
         },
       }
-    ).then((res) => {
-      if (!res.ok) {
-        throw new Error(
-          `Failed to fetch copilot internal auth: ${res.status} ${res.statusText}`
-        )
-      }
-      return res.json() as Promise<CopilotInternalAuth>
-    })
-    if (!res || !res.token) {
-      throw new Error('Failed to fetch copilot internal auth: no token found')
-    }
-    this.#copilotInternalAuth = res
-    return res
+    ).then((res) => res.json() as Promise<CopilotInternalAuth>)
+    return this.setCopilotInternalAuth(res)!
   }
+  setCopilotInternalAuth(
+    auth: CopilotInternalAuth | null
+  ): CopilotInternalAuth | null {
+    if (!auth) {
+      this.#copilotInternalAuth = null
+      return null
+    }
+    if (!auth.token || !auth.expires_at) {
+      throw new Error('Invalid payload')
+    }
+    if (!auth.token || Date.now() / 1000 > auth.expires_at) {
+      this.#copilotInternalAuth = null
+      return null
+    }
+    this.#copilotInternalAuth = auth
+    return this.#copilotInternalAuth
+  }
+}
+
+export interface CopilotInternalUser {
+  access_type_sku: string
+  analytics_tracking_id: string
+  assigned_date: string
+  can_signup_for_limited: boolean
+  chat_enabled: boolean
+  copilot_plan: 'default' | 'individual' | 'enterprise'
+  organization_login_list: unknown[]
+  organization_list: unknown[]
 }
 
 export interface CopilotInternalAuth {

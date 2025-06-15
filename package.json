@@ -1,6 +1,6 @@
 {
   "name": "github-copilot-ai",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Using GitHub Copilot AI just like OpenAI package.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -19,6 +19,10 @@
     },
     "./package.json": "./package.json"
   },
+  "files": [
+    "dist",
+    "tsconfig.json"
+  ],
   "keywords": [
     "openai",
     "copilot",

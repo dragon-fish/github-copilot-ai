@@ -128,3 +128,5 @@ dist
 
 # mother fucker macOS
 .DS_Store
+
+.github_copilot_auth.json

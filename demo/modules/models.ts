@@ -1,6 +1,7 @@
-import { copilot } from './client.js'
+import { getClient } from './client.js'
 
 export async function models() {
+  const copilot = await getClient()
   const formatDate = new Intl.DateTimeFormat('zh-CN', {
     dateStyle: 'medium',
     timeStyle: 'short',
