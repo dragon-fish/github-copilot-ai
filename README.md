@@ -20,7 +20,7 @@ Read more at [OpenAI documentation](https://npmjs.com/package/openai).
 import { GithubCopilotAI } from 'github-copilot-ai'
 
 const client = new GithubCopilotAI({
-  apiKey: 'YOUR_GITHUB_AUTH_TOKEN',
+  apiKey: 'YOUR_COPILOT_OAUTH_TOKEN',
 })
 
 const response = await client.chat.completions.create({
@@ -34,15 +34,17 @@ const response = await client.chat.completions.create({
 })
 ```
 
-## How to get GitHub Auth Token
+## How to get Copilot OAuth Token
 
 We create a simple script to get GitHub Auth Token.
 
 ```sh
-pnpm run token
+pnpm run oauth
 ```
 
 Follow the instructions in the script to get your GitHub Auth Token.
+
+Refer to [the source code](./demo/modules/oauth.ts) for more details, if you want to implement it elsewhere or in another language.
 
 ---
 
