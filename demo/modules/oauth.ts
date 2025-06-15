@@ -5,7 +5,7 @@ import { resolve } from 'node:path'
 import open from 'open'
 
 const APP_ID = 'Iv1.b507a08c87ecfe98'
-const DOTENT_FILE = resolve(import.meta.dirname, './../../.env')
+const DOTENV_FILE = resolve(import.meta.dirname, './../../.env')
 
 const getToken = createOAuthDeviceAuth({
   clientType: 'oauth-app',
@@ -36,15 +36,15 @@ export async function runOAuthFlow() {
 
   console.info('Access Token:', res.token)
   try {
-    const env = await readFile(DOTENT_FILE, 'utf-8')
+    const env = await readFile(DOTENV_FILE, 'utf-8')
     const newEnv = env.replace(/GITHUB_TOKEN=.*/, `GITHUB_TOKEN="${res.token}"`)
-    await writeFile(DOTENT_FILE, newEnv, 'utf-8')
-    console.info(`Your token has been saved to ${DOTENT_FILE}: ${res.token}`)
+    await writeFile(DOTENV_FILE, newEnv, 'utf-8')
+    console.info(`Your token has been saved to ${DOTENV_FILE}: ${res.token}`)
   } catch {
     await clipboardy
       .write(res.token)
       .then(() => {
-        console.info(`Your token has been copied to clipboard: ${DOTENT_FILE}`)
+        console.info(`Your token has been copied to clipboard: ${DOTENV_FILE}`)
       })
       .catch((err) => {
         console.error(`Here's your token: ${res.token}`)
